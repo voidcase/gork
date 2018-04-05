@@ -45,10 +45,12 @@ function scan() {
 				acc: pos.coords.accuracy
 			},
 			success: (res) => {
-				if (res.error !== undefined) {
+				if (res.error === undefined) {
 					output.append($('<p></p>').text(
 						res.things.map(t => 'there is a ' + t.name + ' ' + t.dist + ' meters away.')
 					))
+				} else {
+					debug.log('error: ' + res.error)
 				}
 			}
 		})

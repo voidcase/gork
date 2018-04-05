@@ -11,7 +11,7 @@ def index():
 def scan():
     try:
         my_coords = tuple([float(request.form.get(coord)) for coord in ['lon', 'lat']])
-        confidence = float(request.form.get('confidence'));
+        acc = float(request.form.get('acc'));
         return jsonify({
             'things': [
                 {'dist': gork.dist(my_coords, thing.coords), 'name': thing.name}
