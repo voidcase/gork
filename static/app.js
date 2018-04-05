@@ -62,6 +62,6 @@ function scan() {
 			})
 		},
 		() => {output.append($('<p></p>').text('you don\'t know where you are'))},
-		, {enableHighAccuracy: true}
+		{enableHighAccuracy: true}
 	)
 }
