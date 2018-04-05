@@ -6,7 +6,7 @@ class Node:
         self.name = name
 
 def dist(a, b):
-    return vincenty(a,b).meters
+    return round(vincenty(a,b).meters)
 
 class Gork:
     def __init__(self):
