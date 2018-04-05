@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, jsonify
 import gork
 import gunicorn
 app = Flask(__name__)
+game = gork.Gork()
 
 @app.route('/')
 def index():
