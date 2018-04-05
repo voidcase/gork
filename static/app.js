@@ -13,7 +13,7 @@ function initGeo() {
 	}
 }
 
-function scan() {
+function logpos() {
 	console.log('scanning')
 	if (!geo) {
 		console.log('bad init :(')
@@ -27,5 +27,30 @@ function scan() {
 				"acc: " + pos.coords.accuracy
 			].join("\n")
 		))
+	})
+}
+
+function scan() {
+	if (!geo) {
+		console.log('bad init :(')
+		return
+	}
+	geo.getCurrentPosition(pos => {
+		$.ajax({
+			type: 'POST',
+			url: 'scan',
+			data: {
+				lat: pos.coords.latitude,
+				lon: pos.coords.longitude,
+				acc: pos.coords.accuracy
+			},
+			success: (res) => {
+				if (res.error !== undefined) {
+					output.append($('<p></p>').text(
+						res.things.map(t => 'there is a ' + t.name + ' ' + t.dist + ' meters away.')
+					))
+				}
+			}
+		})
 	})
 }
