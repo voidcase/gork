@@ -8,6 +8,10 @@ game = gork.Gork()
 def index():
     return render_template('index.html')
 
+@app.route('/geotest')
+def geotest():
+    return render_template('geotest.html')
+
 @app.route('/scan',methods=['POST'])
 def scan():
     try:

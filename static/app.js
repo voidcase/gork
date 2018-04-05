@@ -47,7 +47,7 @@ function scan() {
 			success: (res) => {
 				if (res.error === undefined) {
 					output.append($('<p></p>').text(
-						res.things.map(t => 'there is a ' + t.name + ' ' + t.dist + ' meters away.')
+						res.things.map(t => 'there is a ' + t.name + ' ' + t.dist + ' meters away.').join('\n')
 					))
 				} else {
 					debug.log('error: ' + res.error)
