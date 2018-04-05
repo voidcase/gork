@@ -15,7 +15,7 @@ def geotest():
 @app.route('/scan',methods=['POST'])
 def scan():
     try:
-        my_coords = tuple([float(request.form.get(coord)) for coord in ['lon', 'lat']])
+        my_coords = tuple([float(request.form.get(coord)) for coord in ['lat', 'lon']])
         acc = float(request.form.get('acc'));
         return jsonify({
             'things': [
