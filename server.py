@@ -7,7 +7,7 @@ app = Flask(__name__)
 def index():
     return render_template('index.html')
 
-@app.route('/scan')
+@app.route('/scan',methods=['POST'])
 def scan():
     try:
         my_coords = tuple([float(request.form.get(coord)) for coord in ['lon', 'lat']])
