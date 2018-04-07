@@ -1,5 +1,5 @@
 from flask import render_template, request, jsonify
-from server import app
+from stupidappholder import app
 import gork
 
 @app.route('/')

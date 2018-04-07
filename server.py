@@ -5,8 +5,7 @@ from os import environ
 from os.path import abspath
 import gork
 import gunicorn
-
-app = Flask('gork')
+from stupidappholder import app
 if 'DATABASE_URL' in environ:
     print('running live')
     app.config['SQLALCHEMY_DATABASE_URI'] = environ['DATABASE_URL']

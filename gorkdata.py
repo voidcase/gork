@@ -1,6 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
-from server import app
+from stupidappholder import app
 from uuid import uuid4
 db = SQLAlchemy(app)
 db.SQLALCHEMY_TRACK_MODIFICATIONS = False
