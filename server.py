@@ -6,14 +6,6 @@ from os.path import abspath
 import gork
 import gunicorn
 from stupidappholder import app
-if 'DATABASE_URL' in environ:
-    print('running live')
-    app.config['SQLALCHEMY_DATABASE_URI'] = environ['DATABASE_URL']
-else:
-    print('running locally')
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////' + abspath('dev.db')
-
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 logman = LoginManager()
 logman.init_app(app)
 

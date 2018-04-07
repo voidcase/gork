@@ -16,7 +16,7 @@ def scan():
         my_coords = tuple([float(request.form.get(coord)) for coord in ['lat', 'lon']])
         acc = float(request.form.get('acc'));
         return jsonify({
-            'things': look_around(my_coords)
+            'things': gork.look_around(my_coords)
         })
     except (TypeError, ValueError):
         return jsonify({'error': 'your parameters are bad and you should feel bad'})
