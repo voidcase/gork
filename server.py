@@ -6,20 +6,22 @@ from os.path import abspath
 import gork
 import gunicorn
 
-app = Flask(__name__)
 
 # CONFIG
-if 'DATABASE_URL' in environ:
-    print('running live')
-    app.config['SQLALCHEMY_DATABASE_URI'] = environ['DATABASE_URL']
-else:
-    print('running locally')
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////' + abspath('dev.db')
+def create_app():
+    app = Flask(__name__)
+    if 'DATABASE_URL' in environ:
+        print('running live')
+        app.config['SQLALCHEMY_DATABASE_URI'] = environ['DATABASE_URL']
+    else:
+        print('running locally')
+        app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////' + abspath('dev.db')
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    with app.app_context():
+        gork.db.init_app(app)
+    return app
 
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
-# DATABASE INIT
-gork.db.init_app(app)
+app = create_app()
 
 # ROUTES
 @app.route('/')
