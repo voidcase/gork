@@ -5,6 +5,7 @@ from os import environ
 from os.path import abspath
 import gork
 import gunicorn
+import psycopg2
 
 
 # CONFIG
