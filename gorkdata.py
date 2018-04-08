@@ -1,9 +1,8 @@
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
-from stupidappholder import app
 from uuid import uuid4
-db = SQLAlchemy(app)
-db.SQLALCHEMY_TRACK_MODIFICATIONS = False
+
+db = SQLAlchemy()
 
 def gen_uuid():
     return str(uuid4())

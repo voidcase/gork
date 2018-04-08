@@ -1,5 +1,5 @@
 from geopy.distance import vincenty
-from gorkdata import Node
+from gorkdata import db, Node
 
 def dist(a:tuple, b:tuple) -> float:
     return round(vincenty(a,b).meters)
