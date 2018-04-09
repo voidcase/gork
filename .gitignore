@@ -102,3 +102,6 @@ ENV/
 
 # sqlite3 databases
 *.db
+
+# dont ask
+b2b/*
