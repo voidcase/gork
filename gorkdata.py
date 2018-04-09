@@ -4,6 +4,7 @@ import peewee as pw
 from playhouse.db_url import connect
 from os import environ
 from os.path import abspath
+import psycopg2
 
 db = connect(environ.get('DATABASE_URL') or 'sqlite:////' + abspath('dev.db'))
 
