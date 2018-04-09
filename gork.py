@@ -1,5 +1,5 @@
 from geopy.distance import vincenty
-from gorkdata import db, Node
+from gorkdata import Node
 
 def dist(a:tuple, b:tuple) -> float:
     return round(vincenty(a,b).meters)
@@ -10,6 +10,6 @@ def look_around(from_coords):
             'dist': dist(from_coords, node.coords()),
             'name': node.name
         }
-        for node in Node.query.all()
+        for node in Node.select()
     ]
 
