@@ -70,7 +70,7 @@ function scan() {
 		console.log('bad init :(')
 		return
 	}
-	posop(scanwith(pos))
+	posop(scanwith)
 }
 
 function debugscan() {
