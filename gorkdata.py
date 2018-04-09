@@ -29,8 +29,8 @@ class Node(BaseModel):
     name = pw.CharField(max_length=80)
     lat = pw.FloatField()
     lon = pw.FloatField()
-    def coords() -> tuple:
-        return (lat, lon)
+    def coords(self) -> tuple:
+        return (self.lat, self.lon)
 
 class User(BaseModel, UserMixin):
     id = id_field()

@@ -42,31 +42,43 @@ function logpos() {
 	})
 }
 
+function scanwith(pos) {
+	$.ajax({
+		type: 'POST',
+		url: 'scan',
+		data: {
+			lat: pos.coords.latitude,
+			lon: pos.coords.longitude,
+			acc: pos.coords.accuracy
+		},
+		success: (res) => {
+			if (res.error === undefined) {
+				output.append(
+					res.things.map(t => $('<p></p>').text(
+						t.dist < 10 ? 'There is a ' + t.name + ' here.' : 'You sense a ' + t.name + ' ' + t.dist + ' meters away.'
+					))
+				)
+			} else {
+				console.log('error: ' + res.error)
+			}
+		}
+	})
+}
+
 function scan() {
 	if (!geo) {
 		console.log('bad init :(')
 		return
 	}
-	posop(pos => {
-		$.ajax({
-			type: 'POST',
-			url: 'scan',
-			data: {
-				lat: pos.coords.latitude,
-				lon: pos.coords.longitude,
-				acc: pos.coords.accuracy
-			},
-			success: (res) => {
-				if (res.error === undefined) {
-					output.append(
-						res.things.map(t => $('<p></p>').text(
-							t.dist < 10 ? 'There is a ' + t.name + ' here.' : 'You sense a ' + t.name + ' ' + t.dist + ' meters away.'
-						))
-					)
-				} else {
-					debug.log('error: ' + res.error)
-				}
-			}
-		})
+	posop(scanwith(pos))
+}
+
+function debugscan() {
+	scanwith ({
+		coords: {
+			latitude: 0.0,
+			longitude: 0.0,
+			accuracy: 10
+		}
 	})
 }
