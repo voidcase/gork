@@ -9,11 +9,11 @@ import psycopg2
 db = connect(environ.get('DATABASE_URL') or 'sqlite:////' + abspath('dev.db'))
 
 def gen_uuid():
-    return str(uuid4())
+    return uuid4()
 
-def create_db():
+def create_db(safe=True):
     print('creating tables...')
-    db.create_tables()
+    db.create_tables([Node, User], safe=safe) # TODO dry this
     print('tables created')
 
 def populate_db():
@@ -32,7 +32,7 @@ class BaseModel(pw.Model):
         database = db
 
 class Node(BaseModel):
-    id = pw.UUIDField(default=gen_uuid)
+    id = pw.UUIDField(default=uuid4)
     name = pw.CharField(max_length=80)
     lat = pw.FloatField()
     lon = pw.FloatField()
@@ -40,6 +40,6 @@ class Node(BaseModel):
         return (lat, lon)
 
 class User(BaseModel, UserMixin):
-    id = pw.UUIDField()
+    id = pw.UUIDField(default=uuid4)
     name = pw.CharField(max_length=30, unique=True)
     email = pw.CharField(max_length=254, unique=True) # standard max email length
