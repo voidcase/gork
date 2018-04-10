@@ -10,7 +10,7 @@ from uuid import uuid4
 from pprint import pprint
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'trollebolltrollebolllolimoll'
+app.config['SECRET_KEY'] = 'dsafjewoijfc09c32u89cn34t89j4u3r98vnfh4n3v284h9fvojer9gnv034v'
 csrf = CSRFProtect(app)
 
 # LOGIN
