@@ -105,3 +105,4 @@ ENV/
 
 # dont ask
 b2b/*
+.pytest_cache/
