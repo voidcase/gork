@@ -1,0 +1,14 @@
+<html>
+	<head>
+		<title>Gork</title>
+	</head>
+	<body>
+		<div class="topbar">logged in as {{username}}</div>
+		<div class="output"></div>
+		<button onClick="scan()">look around</button>
+		<button onClick="debugscan()">look around null island</button>
+		{% include 'common_scripts.html' %}
+		<script src="{{url_for('static', filename='app.js')}}"></script>
+		<script>initGeo()</script>
+	</body>
+</html>

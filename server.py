@@ -1,5 +1,5 @@
 from flask import Flask, render_template, jsonify, request
-from flask_login import LoginManager, login_user, login_required, logout_user
+from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from flask_wtf.csrf import CSRFProtect
 from os import environ
 import gork
@@ -8,6 +8,7 @@ import gunicorn
 import forms
 from uuid import uuid4
 from pprint import pprint
+
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'dsafjewoijfc09c32u89cn34t89j4u3r98vnfh4n3v284h9fvojer9gnv034v'
@@ -21,11 +22,18 @@ login_manager = LoginManager(app)
 def load_user(user_id):
     return User.get_or_none(User.id == user_id)
 
+print("IM RUNNING!==============================")
 
 # ROUTES
 @app.route('/')
 def index():
-    return render_template('index.html', ssl=('DATABASE_URL' in environ))
+    return render_template('index.html')
+
+
+@app.route('/game')
+@login_required
+def game():
+    return render_template('game.html', username=current_user.name, ssl=('DATABASE_URL' in environ))
 
 @app.route('/geotest')
 def geotest():
@@ -76,7 +84,7 @@ def login():
         return render_template("login.html", form=form)
 
 @app.route('/logout')
-@login_required
+# @login_required
 def logout():
     logout_user()
     return 'Bye.\n'
