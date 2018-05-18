@@ -58,11 +58,10 @@ def scan():
 def register():
     form = forms.RegisterForm()
     if form.validate_on_submit():
-        from werkzeug.security import generate_password_hash
-        new_user = User.create(
+        new_user = User.register(
                 name=form.username.data,
                 email=form.email.data,
-                password_hash=generate_password_hash(form.password.data)
+                pw=form.password.data
                 )
         login_user(new_user)
         return redirect(url_for('game'))

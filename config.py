@@ -25,3 +25,7 @@ NODE_NOUNS = [
         'grave',
         'gazebo',
         ]
+
+# for testing
+
+COORDS_LUND = (55.704677, 13.190564)

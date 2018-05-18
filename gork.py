@@ -46,6 +46,6 @@ def look_around(from_coords, look_range=1000):
             'dir': card_dir(from_coords, node.coords()),
             'name': node.name
         }
-        for node in Node.select() #if dist(from_coords, node.coords()) <= look_range #TODO optimize
+        for node in Node.select() if dist(from_coords, node.coords()) <= look_range #TODO optimize
     ]
 

@@ -51,6 +51,15 @@ class User(BaseModel, UserMixin):
     def get_by_name_or_none(n):
         return User.get_or_none(User.name == n)
 
+    @staticmethod
+    def register(name,email,pw):
+        from werkzeug.security import generate_password_hash
+        return User.create(
+                name=name
+                email=email
+                password_hash=generate_password_hash(data)
+                )
+
 ALL_TABLES = [Node, User]
 
 # init stuff
@@ -66,8 +75,9 @@ def create_db(purge=False):
 
 def populate_db():
     with db.atomic() as transaction:
-        Node.create(lat=55.723533, lon=13.214179, name="magic oval")
-        Node.create(lat=55.723367, lon=13.206387, name="mystical clearing")
+        # Node.create(lat=55.723533, lon=13.214179, name="magic oval")
+        # Node.create(lat=55.723367, lon=13.206387, name="mystical clearing")
+        User.register(name='Aaa',email='aaa@aaa.aaa',pw='a'*9)
     print('db populated')
 
 def reset_db():
