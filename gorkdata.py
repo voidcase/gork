@@ -55,8 +55,8 @@ class User(BaseModel, UserMixin):
     def register(name,email,pw):
         from werkzeug.security import generate_password_hash
         return User.create(
-                name=name
-                email=email
+                name=name,
+                email=email,
                 password_hash=generate_password_hash(data)
                 )
 
