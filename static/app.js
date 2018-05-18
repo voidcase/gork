@@ -1,6 +1,17 @@
 const output = $('.output')
 var geo;
 
+const dirmap = {
+	'N' : 'north',
+	'NE': 'northeast',
+	'NW': 'northwest',
+	'S' : 'south',
+	'SE': 'southeast',
+	'SW': 'southwest',
+	'E' : 'east',
+	'W' : 'west',
+}
+
 function initGeo() {
 	if (geo) {
 		return true;
@@ -55,7 +66,11 @@ function scanwith(pos) {
 			if (res.error === undefined) {
 				output.append(
 					res.things.map(t => $('<p></p>').text(
-						t.dist < 10 ? 'There is a ' + t.name + ' here.' : 'You sense a ' + t.name + ' ' + t.dist + ' meters away.'
+						t.dist < 10 ?
+							'There is a ' + t.name + ' here.' 
+							: 'You sense a ' + t.name 
+								+ ' ' + t.dist + ' meters to the '
+								+ dirmap[t.dir] + "."
 					))
 				)
 			} else {

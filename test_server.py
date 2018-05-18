@@ -26,3 +26,14 @@ def test_scan(tester):
         ))
     assert res.status_code == 200
     assert 'error' not in json.loads(res.data)
+
+def test_card_dir():
+    from gork import card_dir
+    assert card_dir((0,0),( 0, 1)) == 'N'
+    assert card_dir((0,0),( 0,-1)) == 'S'
+    assert card_dir((0,0),( 1, 0)) == 'E'
+    assert card_dir((0,0),(-1, 0)) == 'W'
+    assert card_dir((0,0),( 1, 1)) == 'NE'
+    assert card_dir((0,0),( 1,-1)) == 'SE'
+    assert card_dir((0,0),(-1, 1)) == 'NW'
+    assert card_dir((0,0),(-1,-1)) == 'SW'

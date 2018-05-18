@@ -7,6 +7,10 @@ from os.path import abspath
 import psycopg2
 from config import *
 
+# indices in coordinates tuple
+LON = 0 # x
+LAT = 1 # y
+
 db = connect(environ.get('DATABASE_URL') or 'sqlite:////' + abspath('dev.db'))
 
 
@@ -31,7 +35,7 @@ class Node(BaseModel):
     lat = pw.FloatField()
     lon = pw.FloatField()
     def coords(self) -> tuple:
-        return (self.lat, self.lon)
+        return (self.lon, self.lat)
 
 class User(BaseModel, UserMixin):
     id = id_field()
