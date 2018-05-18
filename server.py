@@ -1,4 +1,4 @@
-from flask import Flask, render_template, jsonify, request
+from flask import Flask, render_template, jsonify, request, redirect
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from flask_wtf.csrf import CSRFProtect
 from os import environ
@@ -44,7 +44,7 @@ def geotest():
 def scan():
     try:
         # debug
-        my_coords = tuple([float(request.form.get(coord)) for coord in ['lat', 'lon']])
+        my_coords = tuple([float(request.form.get(coord)) for coord in ['lon', 'lat']])
         acc = float(request.form.get('acc'));
         return jsonify({
             'things': gork.look_around(my_coords)
@@ -65,7 +65,7 @@ def register():
                 password_hash=generate_password_hash(form.password.data)
                 )
         login_user(new_user)
-        return "And now the adventure begins.\n" #TODO make this redirect
+        return redirect(url_for('game'))
     else:
         if (form.is_submitted()):
             pprint(form.errors)
@@ -77,17 +77,17 @@ def login():
     if form.validate_on_submit():
         if form.authenticated():
             login_user(User.get_by_name(form.username.data))
-            return "You're in.\n"
+            return redirect(url_for('game'))
         else:
-            return "Nah, man.\n"
+            return "Nah, man.\n" #TODO display error instead
     else:
         return render_template("login.html", form=form)
 
 @app.route('/logout')
-# @login_required
+@login_required
 def logout():
     logout_user()
-    return 'Bye.\n'
+    return redirect(url_for('index'))
 
 if __name__ == '__main__':
     app.run(debug=True, port=7001)

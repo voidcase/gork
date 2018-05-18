@@ -72,4 +72,4 @@ def populate_db():
 
 def reset_db():
     create_db(purge=True)
-    populate_db()
+    # populate_db()
