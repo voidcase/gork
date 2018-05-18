@@ -1,4 +1,4 @@
-from flask import Flask, render_template, jsonify, request, redirect
+from flask import Flask, render_template, jsonify, request, redirect, url_for
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from flask_wtf.csrf import CSRFProtect
 from os import environ
@@ -44,7 +44,7 @@ def geotest():
 def scan():
     try:
         # debug
-        my_coords = tuple([float(request.form.get(coord)) for coord in ['lon', 'lat']])
+        my_coords = tuple([float(request.form.get(coord)) for coord in ['lat', 'lon']])
         acc = float(request.form.get('acc'));
         return jsonify({
             'things': gork.look_around(my_coords)
