@@ -11,6 +11,11 @@ from config import *
 LAT = 0 # y
 LON = 1 # x
 
+NODETYPES = {
+        0: "TREASURE",
+        1: "MONSTER",
+        }
+
 db = connect(environ.get('DATABASE_URL') or 'sqlite:////' + abspath('dev.db'))
 
 
@@ -24,7 +29,6 @@ def id_field():
 
 # Models
 
-
 class BaseModel(pw.Model):
     class Meta:
         database = db
@@ -37,11 +41,16 @@ class Node(BaseModel):
     def coords(self) -> tuple:
         return (self.lat, self.lon)
 
+class Treasure(BaseModel):
+    node = pw.ForeignKeyField(Node, on_delete='CASCADE', on_update='CASCADE', unique=True)
+    contents = pw.IntegerField()
+
 class User(BaseModel, UserMixin):
     id = id_field()
     name = pw.CharField(max_length=USERNAME_MAX_LENGTH, unique=True)
     email = pw.CharField(max_length=EMAIL_MAX_LENGTH, unique=True) # standard max email length
     password_hash = pw.TextField()
+    gold = pw.IntegerField(default=0)
     
     @staticmethod
     def get_by_name(n):
@@ -57,10 +66,10 @@ class User(BaseModel, UserMixin):
         return User.create(
                 name=name,
                 email=email,
-                password_hash=generate_password_hash(data)
+                password_hash=generate_password_hash(pw)
                 )
 
-ALL_TABLES = [Node, User]
+ALL_TABLES = [Node, User, Treasure]
 
 # init stuff
 
@@ -82,4 +91,4 @@ def populate_db():
 
 def reset_db():
     create_db(purge=True)
-    # populate_db()
+    populate_db()

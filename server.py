@@ -35,24 +35,34 @@ def index():
 def game():
     return render_template('game.html', username=current_user.name, ssl=('DATABASE_URL' in environ))
 
+
 @app.route('/geotest')
 def geotest():
     return render_template('geotest.html')
 
+
 @app.route('/scan',methods=['POST'])
+@login_required
 @csrf.exempt
 def scan():
-    try:
-        # debug
-        my_coords = tuple([float(request.form.get(coord)) for coord in ['lat', 'lon']])
-        acc = float(request.form.get('acc'));
-        return jsonify({
-            'things': gork.look_around(my_coords)
-        })
-    except TypeError as e:
-        return jsonify({'error': 'You\'re not my type, ' + e.strerror})
-    except ValueError as e:
-        return jsonify({'error': 'I don\'t value you, ' + e.strerror})
+    form = forms.PosForm()
+    if form.validate_on_submit():
+        my_coords = form.pos()
+        acc = form.acc.data
+        return jsonify({'things': gork.look_around(my_coords)})
+    else:
+        return jsonify({'error':form.errors})
+
+
+@app.route('/dig', methods=['POST'])
+@login_required
+@csrf.exempt
+def dig():
+    form = forms.PosForm()
+    if form.validate_on_submit():
+        return jsonify(gork.dig_at(form.pos(),current_user))
+    else: return jsonify({'error':form.errors})
+
 
 @app.route('/register',methods=['GET','POST'])
 def register():
@@ -70,6 +80,7 @@ def register():
             pprint(form.errors)
         return render_template('register.html', form=form)
 
+
 @app.route('/login',methods=['GET','POST'])
 def login():
     form = forms.LoginForm()
@@ -80,7 +91,9 @@ def login():
         else:
             return "Nah, man.\n" #TODO display error instead
     else:
+        print(form.errors)
         return render_template("login.html", form=form)
+
 
 @app.route('/logout')
 @login_required

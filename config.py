@@ -4,6 +4,9 @@ EMAIL_MAX_LENGTH = 254 # standardized
 PW_HASH_MAX_LENGTH = 256
 PW_MIN_LENGTH = 8
 
+RANGE_LOOK=1000
+RANGE_INTERACT=25
+
 NODE_ADJECTIVES = [
         'mysterious',
         'spooky',

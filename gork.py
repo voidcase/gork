@@ -1,9 +1,8 @@
 from geopy.distance import distance
-from gorkdata import Node, LAT, LON
+from gorkdata import Node, User, Treasure, LAT, LON
 import config as cfg
 import random
 from math import pi, atan2
-
 
 def dist(a:tuple, b:tuple) -> float:
     return round(distance(a,b).meters)
@@ -34,18 +33,46 @@ def generate_around(coords, dist, population):
         n = Node.create(
                 lat=origo_lat + (random.random()-.5)*2*dist,
                 lon=origo_lon + (random.random()-.5)*2*dist,
-                name=pick_rand(cfg.NODE_ADJECTIVES)+" "+pick_rand(cfg.NODE_NOUNS)
+                name=pick_rand(cfg.NODE_ADJECTIVES)+" "+pick_rand(cfg.NODE_NOUNS),
+                )
+        t = Treasure.create(
+                node=n,
+                contents=random.randint(1,100),
                 )
         print("generated a",n.name)
 
 
-def look_around(from_coords, look_range=1000):
+def look_around(from_coords):
+    # visible_things = []
+    # for node in Node.select():
+    #     dist_to_node = dist(from_coords, node.coords())
+    #     if dist_to_node <= look_range:
+    #         thing = {
+    #             'dist': dist_to_node,
+    #             'dir': card_dir(from_coords, node.coords()),
+    #             'name': node.name
+    #             }
+    #         if dist_to_node <= interact_range and Treasure.get(node=node.id):
+    #             thing['treasure'] = True;
+    #         visible_things.append(thing)
     return [
         {
             'dist': dist(from_coords, node.coords()),
             'dir': card_dir(from_coords, node.coords()),
-            'name': node.name
+            'name': node.name,
         }
-        for node in Node.select() if dist(from_coords, node.coords()) <= look_range #TODO optimize
+        for node in Node.select() if dist(from_coords, node.coords()) <= cfg.RANGE_LOOK #TODO optimize
     ]
+
+
+def dig_at(pos:tuple, user:User):
+    for t in Treasure.select():
+        if dist(pos,t.node.coords()) <= cfg.RANGE_INTERACT:
+            user.gold += t.contents
+            found = t.contents
+            t.contents = 0
+            user.save()
+            t.save()
+            return {'found':found}
+    return {'found':0}
 

@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms.validators import InputRequired, Email, ValidationError, Length
-from wtforms.fields import StringField, PasswordField
+from wtforms.validators import InputRequired, Email, ValidationError, Length, NumberRange
+from wtforms.fields import StringField, PasswordField, FloatField
 from werkzeug.security import check_password_hash
 
 from config import *
@@ -26,3 +26,15 @@ class RegisterForm(FlaskForm):
     username = StringField('username', validators=[InputRequired(), username_free])
     email = StringField('email', validators=[InputRequired(), Email()])
     password = PasswordField('password', validators=[InputRequired(), Length(min=PW_MIN_LENGTH)])
+
+class PosForm(FlaskForm):
+    lat = FloatField('lat',validators=[InputRequired()])
+    lon = FloatField('lon',validators=[InputRequired()])
+    acc = FloatField('acc',validators=[
+        InputRequired(),
+        NumberRange(max=100, message="You don't know where you are."),
+        ])
+    
+    def pos(self) -> tuple:
+        return (self.lat.data, self.lon.data)
+
