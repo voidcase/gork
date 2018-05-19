@@ -97,3 +97,33 @@ function debugscan() {
 		}
 	})
 }
+
+function dig() {
+	if (!geo) {
+		console.log('bad init :(')
+		return
+	}
+	posop((pos) => {
+		$.ajax({
+			type: 'POST',
+			url: 'scan',
+			data: {
+				lat: pos.coords.latitude,
+				lon: pos.coords.longitude,
+				acc: pos.coords.accuracy
+			},
+			success: (res) => {
+				if (res.error === undefined) {
+					output.append(
+						(res.found > 0) ?
+							"Your shovel strikes a chest, in it you find " + res.found
+								+ " gold pieces!" 
+							: "You dig but find nothing but dirt."
+					)
+				} else {
+					console.log('error: ' + res.error)
+				}
+			}
+		})
+	})
+}

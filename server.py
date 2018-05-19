@@ -91,7 +91,8 @@ def login():
         else:
             return "Nah, man.\n" #TODO display error instead
     else:
-        print(form.errors)
+        if (form.is_submitted()):
+            print(form.errors)
         return render_template("login.html", form=form)
 
 
