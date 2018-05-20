@@ -107,7 +107,7 @@ function dig() {
 	posop((pos) => {
 		$.ajax({
 			type: 'POST',
-			url: 'scan',
+			url: 'dig',
 			data: {
 				lat: pos.coords.latitude,
 				lon: pos.coords.longitude,
