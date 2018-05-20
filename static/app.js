@@ -61,6 +61,7 @@ function scanwith(pos) {
 			lat: pos.coords.latitude,
 			lon: pos.coords.longitude,
 			acc: pos.coords.accuracy,
+			csrf_token: csrf_token,
 		},
 		success: (res) => {
 			if (res.error === undefined) {
@@ -111,7 +112,8 @@ function dig() {
 				lat: pos.coords.latitude,
 				lon: pos.coords.longitude,
 				acc: pos.coords.accuracy,
-			}
+				csrf_token: csrf_token,
+			},
 			success: (res) => {
 				if (res.error === undefined) {
 					output.append(
@@ -123,7 +125,7 @@ function dig() {
 				} else {
 					console.log('error: ' + JSON.stringify(res.error))
 				}
-			}
+			},
 		})
 	})
 }
