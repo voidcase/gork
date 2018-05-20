@@ -67,7 +67,7 @@ function scanwith(pos) {
 			if (res.error === undefined) {
 				output.append(
 					res.things.map(t => $('<p></p>').text(
-						t.dist < 10 ?
+						t.dist < pos.coords.accuracy ?
 							'There is a ' + t.name + ' here.' 
 							: 'You sense a ' + t.name 
 								+ ' ' + t.dist + ' meters to the '

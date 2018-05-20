@@ -67,13 +67,18 @@ def look_around(from_coords):
 
 
 def dig_at(pos:tuple, user:User):
+    print('DIG_DBG========================')
+    print('digpos:',pos)
+    print('user:',user.name)
     for t in Treasure.select():
+        print('digdist:',dist(pos,t.node.coords()))
         if dist(pos,t.node.coords()) <= cfg.RANGE_INTERACT:
             user.gold += t.contents
+            user.save()
             found = t.contents
             t.contents = 0
-            user.save()
             t.save()
             return {'found':found}
+    print('no treasure here')
     return {'found':0}
 

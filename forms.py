@@ -32,7 +32,7 @@ class PosForm(FlaskForm):
     lon = FloatField('lon',validators=[InputRequired()])
     acc = FloatField('acc',validators=[
         InputRequired(),
-        NumberRange(max=100, message="You don't know where you are."),
+        NumberRange(max=40, message="You don't know where you are."),
         ])
     
     def pos(self) -> tuple:

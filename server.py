@@ -43,7 +43,6 @@ def geotest():
 
 @app.route('/scan',methods=['POST'])
 @login_required
-@csrf.exempt
 def scan():
     form = forms.PosForm()
     if form.validate_on_submit():
@@ -56,7 +55,6 @@ def scan():
 
 @app.route('/dig', methods=['POST'])
 @login_required
-@csrf.exempt
 def dig():
     form = forms.PosForm()
     if form.validate_on_submit():
