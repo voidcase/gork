@@ -74,7 +74,7 @@ function scanwith(pos) {
 					))
 				)
 			} else {
-				console.log('error: ' + res.error)
+				console.log('error: ' + JSON.stringify(res.error))
 			}
 		}
 	})
@@ -121,7 +121,7 @@ function dig() {
 							: "You dig but find nothing but dirt."
 					)
 				} else {
-					console.log('error: ' + res.error)
+					console.log('error: ' + JSON.stringify(res.error))
 				}
 			}
 		})

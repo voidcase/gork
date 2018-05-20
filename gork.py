@@ -1,5 +1,5 @@
 from geopy.distance import distance
-from gorkdata import Node, User, Treasure, LAT, LON
+from gorkdata import Node, User, Treasure, LAT, LON, db
 import config as cfg
 import random
 from math import pi, atan2
@@ -29,17 +29,18 @@ def pick_rand(lst):
 def generate_around(coords, dist, population):
     origo_lat = coords[LAT]
     origo_lon = coords[LON]
-    for i in range(population):
-        n = Node.create(
-                lat=origo_lat + (random.random()-.5)*2*dist,
-                lon=origo_lon + (random.random()-.5)*2*dist,
-                name=pick_rand(cfg.NODE_ADJECTIVES)+" "+pick_rand(cfg.NODE_NOUNS),
-                )
-        t = Treasure.create(
-                node=n,
-                contents=random.randint(1,100),
-                )
-        print("generated a",n.name)
+    with db.atomic():
+        for i in range(population):
+            n = Node.create(
+                    lat=origo_lat + (random.random()-.5)*2*dist,
+                    lon=origo_lon + (random.random()-.5)*2*dist,
+                    name=pick_rand(cfg.NODE_ADJECTIVES)+" "+pick_rand(cfg.NODE_NOUNS),
+                    )
+            t = Treasure.create(
+                    node=n,
+                    contents=random.randint(1,100),
+                    )
+            print("generated a",n.name)
 
 
 def look_around(from_coords):
