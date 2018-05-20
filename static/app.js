@@ -60,7 +60,7 @@ function scanwith(pos) {
 		data: {
 			lat: pos.coords.latitude,
 			lon: pos.coords.longitude,
-			acc: pos.coords.accuracy
+			acc: pos.coords.accuracy,
 		},
 		success: (res) => {
 			if (res.error === undefined) {
@@ -93,7 +93,7 @@ function debugscan() {
 		coords: {
 			latitude: 0.0,
 			longitude: 0.0,
-			accuracy: 10
+			accuracy: 10,
 		}
 	})
 }
@@ -110,8 +110,8 @@ function dig() {
 			data: {
 				lat: pos.coords.latitude,
 				lon: pos.coords.longitude,
-				acc: pos.coords.accuracy
-			},
+				acc: pos.coords.accuracy,
+			}
 			success: (res) => {
 				if (res.error === undefined) {
 					output.append(
