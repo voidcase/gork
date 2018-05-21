@@ -1,5 +1,6 @@
 const output = $('.output')
 var geo;
+var pos;
 
 const dirmap = {
 	'N' : 'north',
@@ -116,11 +117,12 @@ function dig() {
 			},
 			success: (res) => {
 				if (res.error === undefined) {
-					output.append(
+					output.append(('<p></p>').text(
 						(res.found > 0) ?
 							"Your shovel strikes a chest, in it you find " + res.found
 								+ " gold pieces!" 
 							: "You dig but find nothing but dirt."
+						)
 					)
 				} else {
 					console.log('error: ' + JSON.stringify(res.error))
