@@ -1,6 +1,8 @@
 const output = $('.output')
-var geo;
-var pos;
+const geoOptions = {enableHighAccuracy: true, maximumAge: 0}
+var geo
+var latestPos
+var watchId
 
 const dirmap = {
 	'N' : 'north',
@@ -13,15 +15,34 @@ const dirmap = {
 	'W' : 'west',
 }
 
+function watchErr() {
+	output.append($('<p></p>').style({color:'#f00'}).text('geo error!'))
+}
+
+function updatePos(pos) {
+	latestPos = pos;
+}
+
+function logpos(pos) {
+	output.append($('<p></p>').text(
+		[
+			"lat: " + pos.coords.latitude,
+			"lon: " + pos.coords.longitude,
+			"acc: " + pos.coords.accuracy
+		].join("\n")
+	))
+}
+
 function initGeo() {
 	if (geo) {
-		return true;
+		return true
 	} else if (navigator.geolocation) {
 		geo = navigator.geolocation
-		return true;
+		watchId = geo.watchPosition(updatePos, watchErr, geoOptions)
+		return true
 	} else {
 		$('body').text("You can't know where you are.")
-		return false;
+		return false
 	}
 }
 
@@ -33,25 +54,17 @@ function posop(callback) {
 	geo.getCurrentPosition(
 		callback,
 		() => {output.append($('<p></p>').text('you don\'t know where you are'))},
-		{enableHighAccuracy: true, maximumAge: 0}
+		geoOptions
 	)
 }
 
-function logpos() {
+function logposbtn() {
 	console.log('scanning')
 	if (!geo) {
 		console.log('bad init :(')
 		return
 	}
-	posop(pos => {
-		output.append($('<p></p>').text(
-			[
-				"lat: " + pos.coords.latitude,
-				"lon: " + pos.coords.longitude,
-				"acc: " + pos.coords.accuracy
-			].join("\n")
-		))
-	})
+	logpos(latestPos)
 }
 
 function scanwith(pos) {
@@ -66,7 +79,7 @@ function scanwith(pos) {
 		},
 		success: (res) => {
 			if (res.error === undefined) {
-				output.append(
+				output.empty().append(
 					res.things.map(t => $('<p></p>').text(
 						t.dist < pos.coords.accuracy ?
 							'There is a ' + t.name + ' here.' 
@@ -87,7 +100,7 @@ function scan() {
 		console.log('bad init :(')
 		return
 	}
-	posop(scanwith)
+	scanwith(latestPos)
 }
 
 function debugscan() {
@@ -105,29 +118,28 @@ function dig() {
 		console.log('bad init :(')
 		return
 	}
-	posop((pos) => {
-		$.ajax({
-			type: 'POST',
-			url: 'dig',
-			data: {
-				lat: pos.coords.latitude,
-				lon: pos.coords.longitude,
-				acc: pos.coords.accuracy,
-				csrf_token: csrf_token,
-			},
-			success: (res) => {
-				if (res.error === undefined) {
-					output.append(('<p></p>').text(
-						(res.found > 0) ?
-							"Your shovel strikes a chest, in it you find " + res.found
-								+ " gold pieces!" 
-							: "You dig but find nothing but dirt."
-						)
+	var pos = latestPos
+	$.ajax({
+		type: 'POST',
+		url: 'dig',
+		data: {
+			lat: pos.coords.latitude,
+			lon: pos.coords.longitude,
+			acc: pos.coords.accuracy,
+			csrf_token: csrf_token,
+		},
+		success: (res) => {
+			if (res.error === undefined) {
+				output.append(('<p></p>').text(
+					(res.found > 0) ?
+						"Your shovel strikes a chest, in it you find " + res.found
+							+ " gold pieces!" 
+						: "You dig but find nothing but dirt."
 					)
-				} else {
-					console.log('error: ' + JSON.stringify(res.error))
-				}
-			},
-		})
+				)
+			} else {
+				console.log('error: ' + JSON.stringify(res.error))
+			}
+		},
 	})
 }

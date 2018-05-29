@@ -1,0 +1,22 @@
+.topbar {
+	background-color: #000;
+	color: #fff;
+	width: 100%;
+}
+
+.controls {
+	position: fixed;
+	bottom: 0;
+	width: 100%;
+	height: 15%;
+}
+
+.controls button {
+	height: 100%;
+	width: 32%;
+	float: left;
+}
+
+.output p {
+	background-color: #eee;
+}
