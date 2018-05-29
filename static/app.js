@@ -83,9 +83,9 @@ function scanwith(pos) {
 					res.things.map(t => $('<p></p>').text(
 						t.dist < pos.coords.accuracy ?
 							'There is a ' + t.name + ' here.' 
-							: 'You sense a ' + t.name 
-								+ ' ' + t.dist + ' meters to the '
-								+ dirmap[t.dir] + "."
+							: 'You sense a ' + t.name +
+								' ' + t.dist + ' meters to the ' +
+								dirmap[t.dir] + "."
 					))
 				)
 			} else {
@@ -132,8 +132,8 @@ function dig() {
 			if (res.error === undefined) {
 				output.append(('<p></p>').text(
 					(res.found > 0) ?
-						"Your shovel strikes a chest, in it you find " + res.found
-							+ " gold pieces!" 
+						"Your shovel strikes a chest, in it you find " + res.found +
+							" gold pieces!" 
 						: "You dig but find nothing but dirt."
 					)
 				)
